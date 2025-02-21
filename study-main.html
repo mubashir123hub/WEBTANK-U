@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Study Hub - WebTank</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Share+Tech+Mono&display=swap"
+        rel="stylesheet">
+    <style>
+        /* Theme Styles */
+        body {
+            background: #030303;
+            color: #ffffff;
+            font-family: 'Orbitron', sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow: hidden;
+        }
+
+        .container {
+            text-align: center;
+            max-width: 800px;
+            padding: 20px;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            color: #00f3ff;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+        }
+
+        .selection-box {
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px 0;
+            backdrop-filter: blur(10px);
+        }
+
+        .selection-box h2 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: #ff00ff;
+        }
+
+        .options {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .option-btn {
+            background: rgba(0, 243, 255, 0.1);
+            border: 2px solid #00f3ff;
+            border-radius: 10px;
+            padding: 10px 20px;
+            color: #00f3ff;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .option-btn:hover {
+            background: #00f3ff;
+            color: #030303;
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 243, 255, 0.3);
+        }
+
+        .next-btn {
+            background: #ff00ff;
+            border: none;
+            border-radius: 10px;
+            padding: 10px 20px;
+            color: #ffffff;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 20px;
+        }
+
+        .next-btn:hover {
+            background: #9D00FF;
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(157, 0, 255, 0.3);
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Study Hub</h1>
+
+        <div id="board-selection" class="selection-box">
+            <h2>Select Your Board</h2>
+            <div class="options">
+                <button class="option-btn" data-value="KPK">KPK</button>
+                <button class="option-btn" data-value="Punjab">Punjab</button>
+                <button class="option-btn" data-value="Islamabad">Islamabad/FBISE</button>
+                <button class="option-btn" data-value="Sindh">Sindh</button>
+            </div>
+        </div>
+
+        <div id="class-selection" class="selection-box hidden">
+            <h2>Select Your Class</h2>
+            <div class="options">
+                <button class="option-btn" data-value="7">7</button>
+                <button class="option-btn" data-value="8">8</button>
+                <button class="option-btn" data-value="9">9</button>
+                <button class="option-btn" data-value="10">10</button>
+                <button class="option-btn" data-value="11">11</button>
+                <button class="option-btn" data-value="12">12</button>
+            </div>
+        </div>
+
+        <div id="items-selection" class="selection-box hidden">
+            <h2>Select Your Study Material</h2>
+            <div class="options">
+                <button class="option-btn" data-value="QuestionPapers">Question Papers</button>
+                <button class="option-btn" data-value="ModelPapers">Model Papers</button>
+                <button class="option-btn" data-value="Textbooks">Textbooks</button>
+                <button class="option-btn" data-value="Notes">Notes</button>
+            </div>
+        </div>
+
+        <div id="subject-selection" class="selection-box hidden">
+            <h2>Select Your Subject</h2>
+            <div class="options">
+                <button class="option-btn" data-value="Math">Math</button>
+                <button class="option-btn" data-value="Physics">Physics</button>
+                <button class="option-btn" data-value="Chemistry">Chemistry</button>
+                <button class="option-btn" data-value="Biology">Biology</button>
+                <button class="option-btn" data-value="English">English</button>
+                <button class="option-btn" data-value="Urdu">Urdu</button>
+            </div>
+        </div>
+
+        <button id="next-btn" class="next-btn hidden">Get Resources</button>
+    </div>
+
+    <script>
+        const boardSelection = document.getElementById('board-selection');
+        const classSelection = document.getElementById('class-selection');
+        const itemsSelection = document.getElementById('items-selection');
+        const subjectSelection = document.getElementById('subject-selection');
+
+        let selectedBoard, selectedClass, selectedItem, selectedSubject;
+
+        document.querySelectorAll('#board-selection .option-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                selectedBoard = btn.getAttribute('data-value');
+                boardSelection.classList.add('hidden');
+                classSelection.classList.remove('hidden');
+            });
+        });
+
+        document.querySelectorAll('#class-selection .option-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                selectedClass = btn.getAttribute('data-value');
+                classSelection.classList.add('hidden');
+                itemsSelection.classList.remove('hidden');
+            });
+        });
+
+        document.querySelectorAll('#items-selection .option-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                selectedItem = btn.getAttribute('data-value');
+                itemsSelection.classList.add('hidden');
+                subjectSelection.classList.remove('hidden');
+            });
+        });
+
+        document.querySelectorAll('#subject-selection .option-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                selectedSubject = btn.getAttribute('data-value');
+                nextBtn.classList.remove('hidden');
+            });
+        });
+    </script>
+        <script>
+            const nextBtn = document.getElementById('next-btn');
+
+            nextBtn.addEventListener('click', () => {
+                if (selectedBoard && selectedClass && selectedItem && selectedSubject) {
+                    const url = `school/${selectedBoard}/${selectedClass}/${selectedItem}/${selectedSubject}.pdf`;
+                    window.location.href = url;
+                } else {
+                    alert("Please make all selections before proceeding.");
+                }
+            });
+        </script>
+</body>
+
+</html>

@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebTank - Neural Interface Learning Hub</title>
+    <meta name="description" content="Advanced cybernetic learning modules">
+
+    <!-- Font Awesome and Cyberpunk Font -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Share+Tech+Mono&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+
+    <style>
+        .learning-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            padding: 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .module-card {
+            background: rgba(0, 0, 0, 0.7);
+            border-radius: 15px;
+            padding: 2rem;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .module-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--cyber-gradient);
+            opacity: 0.1;
+            transition: opacity 0.3s ease;
+        }
+
+        .module-card:hover::before {
+            opacity: 0.2;
+        }
+
+        .module-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .module-icon {
+            width: 50px;
+            height: 50px;
+            background: var(--cyber-gradient);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: var(--text-light);
+        }
+
+        .progress-bar {
+            height: 4px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 2px;
+            overflow: hidden;
+            margin-top: 1rem;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--cyber-gradient);
+            width: 0;
+            transition: width 0.3s ease;
+        }
+
+        .module-card:hover .progress-fill {
+            width: 100%;
+        }
+
+        .lesson-list {
+            margin-top: 1.5rem;
+            list-style: none;
+            padding: 0;
+        }
+
+        .lesson-item {
+            padding: 0.8rem;
+            margin: 0.5rem 0;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .lesson-item:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateX(10px);
+        }
+
+        .completion-badge {
+            font-size: 0.8rem;
+            padding: 0.2rem 0.5rem;
+            background: var(--neon-green);
+            color: black;
+            border-radius: 4px;
+            margin-left: auto;
+        }
+
+        @media (max-width: 768px) {
+            .learning-grid {
+                padding: 1rem;
+                gap: 1rem;
+            }
+
+            .module-card {
+                padding: 1.5rem;
+            }
+        }
+
+        /* Enhanced School Resources Section */
+        .school-resources {
+            padding: 4rem 2rem;
+            background: rgba(0, 0, 0, 0.8);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .resources-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .resource-card {
+            position: relative;
+            background: rgba(0, 15, 30, 0.8);
+            border-radius: 15px;
+            padding: 2rem;
+            overflow: hidden;
+            transform-style: preserve-3d;
+            transition: all 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+        }
+
+        .resource-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: var(--hologram-gradient);
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .resource-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow:
+                0 0 20px rgba(0, 243, 255, 0.3),
+                0 0 40px rgba(157, 0, 255, 0.2);
+        }
+
+        .resource-card:hover::before {
+            opacity: 0.1;
+            animation: hologramPulse 2s infinite;
+        }
+
+        @keyframes hologramPulse {
+
+            0%,
+            100% {
+                opacity: 0.1;
+            }
+
+            50% {
+                opacity: 0.2;
+            }
+        }
+
+        .resource-header {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .resource-icon {
+            width: 60px;
+            height: 60px;
+            background: var(--cyber-gradient);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .resource-icon::after {
+            content: '';
+            position: absolute;
+            width: 150%;
+            height: 150%;
+            background: inherit;
+            filter: blur(15px);
+            opacity: 0.7;
+            animation: iconGlow 3s infinite;
+        }
+
+        @keyframes iconGlow {
+
+            0%,
+            100% {
+                transform: rotate(0deg);
+            }
+
+            50% {
+                transform: rotate(180deg);
+            }
+        }
+
+        .resource-title {
+            font-size: 1.5rem;
+            color: var(--neon-blue);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin: 0;
+        }
+
+        .resource-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .resource-item {
+            padding: 1rem;
+            margin: 0.8rem 0;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .resource-item:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateX(10px);
+            box-shadow: 0 0 15px rgba(0, 243, 255, 0.2);
+        }
+
+        .resource-item i {
+            color: var(--neon-pink);
+            font-size: 1.2rem;
+        }
+
+        .resource-meta {
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.6);
+            margin-top: 0.5rem;
+        }
+
+        .resource-badge {
+            padding: 0.2rem 0.5rem;
+            background: var(--neon-green);
+            color: black;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            margin-left: auto;
+        }
+
+        .hologram-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg,
+                    rgba(0, 243, 255, 0.1),
+                    rgba(157, 0, 255, 0.1));
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .resource-card:hover .hologram-overlay {
+            opacity: 1;
+        }
+
+        @media (max-width: 768px) {
+            .resources-grid {
+                grid-template-columns: 1fr;
+                padding: 1rem;
+            }
+
+            .resource-card {
+                margin: 1rem;
+            }
+
+            .resource-header {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .resource-icon {
+                margin: 0 auto;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Scroll Progress Bar -->
+    <div class="scroll-progress"></div>
+
+    <!-- Circuit Background -->
+    <div class="circuit-background"></div>
+
+    <!-- Particles Background -->
+    <div class="particles-container" id="particles-js"></div>
+
+    <!-- Navigation -->
+    <nav class="nav-header cyber-border">
+        <div class="nav-content">
+            <div class="logo">
+                <a href="/" class="loader-text">TECH_MATRIX</a>
+            </div>
+            <button class="mobile-menu-btn">
+                <i class="fas fa-bars"></i>
+            </button>
+            <div class="nav-links">
+                <a href="/" class="nav-link">HOME</a>
+                <a href="/tech" class="nav-link">TECH_MATRIX</a>
+                <a href="#" class="nav-link">UPGRADE</a>
+                <a href="#" class="nav-link">EXPLORE</a>
+                <a href="#" class="nav-link">MATRIX</a>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <section class="hero">
+            <div class="hero-content">
+                <h1 class="hero-title" data-text="TECH MATRIX: INTERFACE">TECH MATRIX: INTERFACE</h1>
+                <h2 class="loader-text">ACCESS TECH MODULES</h2>
+                <p class="cyber-text">SELECT YOUR TECH PATH</p>
+                <div class="energy-pulse"></div>
+            </div>
+        </section>
+
+        <section class="learning-grid">
+            <!-- Web Development Module -->
+            <div class="module-card cyber-border">
+                <div class="module-header">
+                    <div class="module-icon">
+                        <i class="fas fa-code"></i>
+                    </div>
+                    <h3 class="loader-text">WEB DEVELOPMENT</h3>
+                </div>
+                <p>Master the art of creating immersive digital experiences</p>
+                <ul class="lesson-list">
+                    <li class="lesson-item">
+                        <i class="fas fa-microchip"></i>
+                        HTML5 Architecture
+                        <span class="completion-badge">UNLOCKED</span>
+                    </li>
+                    <li class="lesson-item">
+                        <i class="fas fa-paint-brush"></i>
+                        CSS Neural Styling
+                    </li>
+                    <li class="lesson-item">
+                        <i class="fas fa-brain"></i>
+                        JavaScript AI Integration
+                    </li>
+                </ul>
+                <div class="progress-bar">
+                    <div class="progress-fill"></div>
+                </div>
+            </div>
+
+            <!-- Cybersecurity Module -->
+            <div class="module-card cyber-border">
+                <div class="module-header">
+                    <div class="module-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3 class="loader-text">CYBERSECURITY</h3>
+                </div>
+                <p>Enhance your digital defense mechanisms</p>
+                <ul class="lesson-list">
+                    <li class="lesson-item">
+                        <i class="fas fa-lock"></i>
+                        Encryption Protocols
+                    </li>
+                    <li class="lesson-item">
+                        <i class="fas fa-user-shield"></i>
+                        Network Defense
+                    </li>
+                    <li class="lesson-item">
+                        <i class="fas fa-bug"></i>
+                        Vulnerability Analysis
+                    </li>
+                </ul>
+                <div class="progress-bar">
+                    <div class="progress-fill"></div>
+                </div>
+            </div>
+
+            <!-- AI & Machine Learning -->
+            <div class="module-card cyber-border">
+                <div class="module-header">
+                    <div class="module-icon">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <h3 class="loader-text">AI SYSTEMS</h3>
+                </div>
+                <p>Develop advanced artificial intelligence constructs</p>
+                <ul class="lesson-list">
+                    <li class="lesson-item">
+                        <i class="fas fa-network-wired"></i>
+                        Neural Networks
+                    </li>
+                    <li class="lesson-item">
+                        <i class="fas fa-brain"></i>
+                        Machine Learning
+                    </li>
+                    <li class="lesson-item">
+                        <i class="fas fa-chart-line"></i>
+                        Deep Learning
+                    </li>
+                </ul>
+                <div class="progress-bar">
+                    <div class="progress-fill"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- School Resources Section -->
+        <section class="school-resources">
+            <div class="hero-content">
+                <h2 class="loader-text">NEURAL ARCHIVE: EDUCATIONAL MATRIX</h2>
+                <p class="cyber-text">ACCESS ENHANCED LEARNING RESOURCES</p>
+            </div>
+
+            <div class="resources-grid">
+                <!-- Notes Section -->
+                <div class="resource-card cyber-border">
+                    <div class="resource-header">
+                        <div class="resource-icon">
+                            <i class="fas fa-book-open"></i>
+                        </div>
+                        <h3 class="resource-title">Neural Notes</h3>
+                    </div>
+                    <ul class="resource-list">
+                        <li class="resource-item">
+                            <i class="fas fa-microchip"></i>
+                            <div>
+                                <span>Advanced Mathematics</span>
+                                <div class="resource-meta">Updated 2 hours ago</div>
+                            </div>
+                            <span class="resource-badge">NEW</span>
+                        </li>
+                        <li class="resource-item">
+                            <i class="fas fa-atom"></i>
+                            <div>
+                                <span>Quantum Physics</span>
+                                <div class="resource-meta">Chapter 1-5</div>
+                            </div>
+                        </li>
+                        <li class="resource-item">
+                            <i class="fas fa-dna"></i>
+                            <div>
+                                <span>Bioengineering</span>
+                                <div class="resource-meta">Complete Series</div>
+                            </div>
+                        </li>
+                    </ul>
+                    <div class="hologram-overlay"></div>
+                </div>
+
+                <!-- Model Papers Section -->
+                <div class="resource-card cyber-border">
+                    <div class="resource-header">
+                        <div class="resource-icon">
+                            <i class="fas fa-file-alt"></i>
+                        </div>
+                        <h3 class="resource-title">Model Papers</h3>
+                    </div>
+                    <ul class="resource-list">
+                        <li class="resource-item">
+                            <i class="fas fa-brain"></i>
+                            <div>
+                                <span>AI Systems Mock Test</span>
+                                <div class="resource-meta">2025 Series</div>
+                            </div>
+                            <span class="resource-badge">HOT</span>
+                        </li>
+                        <li class="resource-item">
+                            <i class="fas fa-network-wired"></i>
+                            <div>
+                                <span>Neural Networks Exam</span>
+                                <div class="resource-meta">Practice Set</div>
+                            </div>
+                        </li>
+                        <li class="resource-item">
+                            <i class="fas fa-robot"></i>
+                            <div>
+                                <span>Robotics Assessment</span>
+                                <div class="resource-meta">Final Term</div>
+                            </div>
+                        </li>
+                    </ul>
+                    <div class="hologram-overlay"></div>
+                </div>
+
+                <!-- Textbooks Section -->
+                <div class="resource-card cyber-border">
+                    <div class="resource-header">
+                        <div class="resource-icon">
+                            <i class="fas fa-graduation-cap"></i>
+                        </div>
+                        <h3 class="resource-title">Digital Library</h3>
+                    </div>
+                    <ul class="resource-list">
+                        <li class="resource-item">
+                            <i class="fas fa-microchip"></i>
+                            <div>
+                                <span>Quantum Computing</span>
+                                <div class="resource-meta">Interactive Edition</div>
+                            </div>
+                            <span class="resource-badge">AR</span>
+                        </li>
+                        <li class="resource-item">
+                            <i class="fas fa-code"></i>
+                            <div>
+                                <span>Neural Programming</span>
+                                <div class="resource-meta">Version 2.0</div>
+                            </div>
+                        </li>
+                        <li class="resource-item">
+                            <i class="fas fa-vr-cardboard"></i>
+                            <div>
+                                <span>VR Development</span>
+                                <div class="resource-meta">Practical Guide</div>
+                            </div>
+                        </li>
+                    </ul>
+                    <div class="hologram-overlay"></div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Bottom Navigation -->
+    <nav class="bottom-nav">
+        <a href="/" class="bottom-nav-item">
+            <i class="fas fa-home"></i>
+            <span>Home</span>
+        </a>
+        <a href="study.html" class="bottom-nav-item">
+            <i class="fas fa-brain"></i>
+            <span>Learn</span>
+        </a>
+        <a href="tech.html" class="bottom-nav-item">
+            <i class="fas fa-microchip"></i>
+            <span>Tech</span>
+        </a>
+        <a href="#" class="bottom-nav-item">
+            <i class="fas fa-vr-cardboard"></i>
+            <span>VR</span>
+        </a>
+                <a href="study-main.html" class="bottom-nav-item">
+                    <i class="fas fa-brain"></i>
+                    <span>School Purpose</span>
+                </a>
+    </nav>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script src="animations.js"></script>
+    <script src="theme.js"></script>
+</body>
+
+</html>
